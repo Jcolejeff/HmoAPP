@@ -1,13 +1,13 @@
 # HMO App
 
-The frontend repository of  Hmo App
+The frontend repository of Hmo App
 
 ## Setup
 
 1. Clone this repository on your computer.
 
 ```sh
-git clone https://github.com/jcolejeff/hmoApp.git
+git clone https://github.com/Jcolejeff/HmoAPP.git
 ```
 
 2. Change your working directory to the cloned project and run `pnpm install` to install project dependencies.
