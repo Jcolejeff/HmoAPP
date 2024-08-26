@@ -14,6 +14,8 @@ import CreateRequestProvider, {
   useCreateRequestContext,
 } from '@/domains/dashboard/context/initiator/create-request-context';
 import DepartmentsRequestProvider from '@/domains/departments/context/departments-request-provider';
+import useFetchDepartmentMembers from '@/domains/departments/hooks/use-fetch-department-members';
+import useFetchDepartments from '@/domains/departments/hooks/use-fetch-departments';
 import HotelContextProvider, { useHotelContext } from '@/domains/hotels/context/hotel-context';
 import { useUserContext } from '@/domains/user/contexts/user-context';
 import WorkspaceProvider, { useWorkspaceContext } from '@/domains/workspace/contexts/workspace-context';
@@ -33,7 +35,11 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { user, isUserLoading, currentWorkspaceRole } = useUserContext();
+  const { user, isUserLoading, currentWorkspaceRole, setCurrentWorkspaceRole } = useUserContext();
+  const { isLoading, data: { items: departments = [] } = {} } = useFetchDepartments({ size: 10, page: 1 });
+  const { data: coworkers, isLoading: fechingUsers } = useFetchDepartmentMembers({
+    id: departments[0]?.id,
+  });
 
   const router = useRouter();
 
@@ -41,7 +47,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (!user && !isUserLoading) {
       router.push('/auth/signin');
     }
-  }, [user, isUserLoading, router, currentWorkspaceRole]);
+  }, [user, isUserLoading, router]);
+
+  useEffect(() => {
+    const checkIfUserIsAdmin =
+      departments.length > 0 &&
+      departments[0] &&
+      departments[0]?.approvers?.find((approver: any) => approver.approver_id === user?.id);
+
+    if (checkIfUserIsAdmin) {
+      setCurrentWorkspaceRole('Manager');
+    } else {
+      setCurrentWorkspaceRole('Staff');
+    }
+  }, [isLoading, fechingUsers]);
 
   console.log({ currentWorkspaceRole });
   if (!isUserLoading && user) {
