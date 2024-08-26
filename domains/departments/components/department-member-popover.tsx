@@ -55,7 +55,7 @@ const DepartmentMemberPopOver: React.FC<iDepartmentMemberPopOver> = ({ coworkerI
 
   const actions = [
     { label: 'View Open requests', className: 'text-gray-500', onclick: handleViewOpenCoworkerRequest },
-    { label: 'Remove Coworker', className: 'text-red-500 ', onclick: handleRemoveCoworker },
+    { label: 'Remove User', className: 'text-red-500 ', onclick: handleRemoveCoworker },
   ];
 
   const { onOpenChange } = useManagerRequestContext();

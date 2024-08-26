@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
 
 import { getFileExtensionFromUrl, getFileUrl, reverseArray } from '@/lib/utils';
-import { capitalizeFirstLetter } from '@/lib/utils/string';
+import { capitalizeFirstLetter, getInitialsFromSentence } from '@/lib/utils/string';
 
 import { useUserContext } from '@/domains/user/contexts/user-context';
 
@@ -123,18 +123,12 @@ export default function ChatBox({ recordId, parentId }: ChatBoxProps) {
                     </Show>
                   </div>
                 ) : (
-                  <div className="flex gap-2 ">
-                    <AvatarRoot className=" -mb-[2rem] block rounded-full" size="xs">
-                      <>
-                        <AvatarImage
-                          className="h-full w-full rounded-md object-cover"
-                          src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
-                          alt="Colm Tuite"
-                        />
-
-                        <AvatarFallback>{creator.first_name} </AvatarFallback>
-                      </>
-                    </AvatarRoot>
+                  <div className="flex gap-2 py-2 ">
+                    <div className="relative -top-[0.2rem] z-20 h-fit gap-2 rounded-full border bg-secondary-7 px-2 py-2 shadow-sm">
+                      <Text className="text-xs">
+                        {getInitialsFromSentence(`${creator.first_name} ${creator.last_name}`)}
+                      </Text>
+                    </div>
 
                     <div className="flex flex-col gap-2">
                       <Text className=" text-[0.68rem]  text-text-dim">

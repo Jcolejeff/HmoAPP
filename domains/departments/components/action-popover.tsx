@@ -75,7 +75,7 @@ const ActionPopOver: React.FC<iActionPopover> = ({ deptId, setTitle, title, desc
   const actions = [
     { label: 'Invite new users', className: 'text-black', onClick: handleInvite },
     { label: 'Manage Admins', className: 'text-black', onClick: handleManageAdmins },
-    { label: 'View Open requests', className: 'text-black', onClick: handleViewOpenRequests },
+    // { label: 'View Open requests', className: 'text-black', onClick: handleViewOpenRequests },
     // { label: 'Edit Department', className: 'text-black', onClick: handleEditDepartment },
     // { label: 'Delete Department', className: 'text-red-500', onClick: handleDeleteDepartment },
   ];
@@ -89,7 +89,7 @@ const ActionPopOver: React.FC<iActionPopover> = ({ deptId, setTitle, title, desc
       <Popover>
         <PopoverTrigger asChild>
           <button onClick={handleTriggerClick}>
-            <EllipsisVertical color="gray" size={16} />
+            <EllipsisVertical color="gray" size={26} />
           </button>
         </PopoverTrigger>
         <PopoverContent className="mr-[50px] w-48 rounded-md border bg-white p-4 shadow-md">
@@ -104,7 +104,7 @@ const ActionPopOver: React.FC<iActionPopover> = ({ deptId, setTitle, title, desc
                   action.onClick();
                 }}
               >
-                <Text size={'xs'} className={`${action.className}`}>
+                <Text size={'sm'} className={`${action.className}`}>
                   {action.label}
                 </Text>
               </button>

@@ -110,7 +110,7 @@ const HotelDetailsTab = ({ switchTab, data: tabData, handleComplete }: Iprops) =
 
   const { currentWorkspace } = useWorkspaceContext();
 
-  const [roomPrice, setRoomPrice] = useState<number>(isEditMode ? createRequestData?.rate! : 0);
+  const [roomPrice, setRoomPrice] = useState<number>(isEditMode ? createRequestData?.rate! : 33320);
   const [hotelId, setHotelId] = useState<string>('');
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [city, setCity] = useState<string | null>(isEditMode ? createRequestData?.city! : null);
@@ -122,13 +122,19 @@ const HotelDetailsTab = ({ switchTab, data: tabData, handleComplete }: Iprops) =
     mode: 'onSubmit',
     defaultValues: isEditMode
       ? {
-          hotel_name: createRequestData?.hotel,
-          room: createRequestData?.room,
+          hotel_name: createRequestData?.hotel ?? 'jos hotel',
+          room: createRequestData?.room ?? 'standard',
 
           start_date: new Date(createRequestData?.start ?? new Date()),
           end_date: new Date(createRequestData?.end ?? new Date()),
         }
-      : {},
+      : {
+          hotel_name: 'Jefery Hotel',
+          room: 'Double ',
+
+          start_date: new Date('2024-09-01'),
+          end_date: new Date('2024-09-10'),
+        },
   });
 
   const onCloseForm = (open: boolean) => {
@@ -154,11 +160,11 @@ const HotelDetailsTab = ({ switchTab, data: tabData, handleComplete }: Iprops) =
 
       start: formatDate(values.start_date, 'yyyy-MM-dd'),
       end: formatDate(values.end_date, 'yyyy-MM-dd'),
-      state: state!,
-      city: city ? city : state!,
-      rate: roomPrice!,
+      state: 'plateau',
+      city: 'jos',
+      rate: roomPrice,
 
-      country: country!,
+      country: 'nigeria',
     });
     switchTab(tabData[2]);
     handleComplete(tabData[1]);

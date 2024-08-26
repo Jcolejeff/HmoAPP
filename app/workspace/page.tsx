@@ -30,9 +30,9 @@ const ListOrganizations = () => {
           as={'h2'}
           className="mb-4 text-center leading-9 tracking-tight text-gray-900"
         >
-          Choose an organization
+          Choose a Workspace
         </Text>
-        <Text className="text-center text-gray-400">Select an organization to continue</Text>
+        <Text className="text-center text-gray-400">Select a workspace to continue</Text>
 
         <div className="mt-8 flex items-center justify-center gap-1 rounded-md border border-green-200 bg-[#f7fcf9] p-4">
           <span className="rounded-lg text-primary">

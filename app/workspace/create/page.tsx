@@ -89,10 +89,10 @@ const CreateOrganization = () => {
           weight={'bold'}
           className="mt-10 text-center leading-9 tracking-tight text-gray-900"
         >
-          Create a new organization
+          Create a new workspace
         </Text>
         <Text weight={'normal'} size={'sm'} className="mt-4 text-center text-gray-400">
-          Create an organization to use continue
+          Create a workspace to use continue
         </Text>
         {/* {error ? <pre className="text-center text-red-400">{error}</pre> : null} */}
       </div>

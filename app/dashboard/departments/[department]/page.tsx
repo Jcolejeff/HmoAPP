@@ -45,7 +45,7 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
   };
 
   const renderCoworkers = () => {
-    if (isLoading) {
+    if (isLoading || !coworkers) {
       return (
         <div className="mb-4 mt-4 p-3">
           <div className="flex justify-center py-56 text-text-dim">
@@ -74,7 +74,7 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
                 <Checkbox />
               </th>
               <th className="px-4 py-3 text-left">
-                <Text size={'xs'}>Co-workers name</Text>
+                <Text size={'xs'}> name</Text>
               </th>
               <th className="px-4 py-3 text-left">
                 <Text size={'xs'}>Date added</Text>
@@ -111,7 +111,7 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
                   </Text>
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-500">
-                  <Text size={'xs'}>{coworker.member.user_orgs[0].role.name}</Text>
+                  <Text size={'xs'}>{coworker.member.user_orgs[0].role.name === 'Staff' ? 'User' : 'Admin'}</Text>
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-500">
                   <DepartmentMemberPopOver coworkerId={coworker} departmentId={params.department} />
@@ -169,7 +169,7 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
       <div className="mb-2 flex items-center justify-between">
         <div className="flex w-full justify-between">
           <h1 className="text-1xl font-bold">Manage department</h1>
-          <div className="flex space-x-2">
+          {/* <div className="flex space-x-2">
             <Button
               className="flex items-center space-x-1 rounded border bg-transparent p-2 hover:border-gray-300 hover:bg-gray-100"
               onClick={() => '/'}
@@ -183,7 +183,7 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
               <Plus color="white" size={16} />
               <span className="text-xs text-gray-200">Co-worker</span>
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -194,13 +194,13 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
             onClick={() => handleTabChange('Coworkers')}
           >
             <Text size={'xs'} className="flex items-center">
-              Coworkers{' '}
+              All Users{' '}
               <Text size={'xs'} className="ml-1 rounded-lg bg-black px-2 py-1 text-white">
                 {coworkers && coworkers.items.length}
               </Text>
             </Text>
           </Button>
-          <Button
+          {/* <Button
             className={`px-4 py-2 ${activeDepartmentTab === 'Requests' ? 'border-b-2 border-black text-black' : 'text-gray-500'} rounded-none bg-transparent`}
             onClick={() => handleTabChange('Requests')}
           >
@@ -210,7 +210,7 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
                 {requests.length}
               </Text>
             </Text>
-          </Button>
+          </Button> */}
         </div>
         <div className="mb-6 flex justify-between border-b pb-4">
           <div className="flex h-full w-fit items-center rounded-lg border px-4 py-1  ">
@@ -225,14 +225,9 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
               />
             </div>
           </div>
-          <div className="flex w-fit space-x-3">
-            <SecondarySortPopover />
-            <SecondarySortPopover />
-          </div>
         </div>
 
-        {/* Content Section */}
-        {activeDepartmentTab === 'Coworkers' ? renderCoworkers() : renderRequests()}
+        {renderCoworkers()}
       </div>
     </div>
   );
