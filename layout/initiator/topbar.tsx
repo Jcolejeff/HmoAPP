@@ -51,13 +51,7 @@ const Topbar = () => {
                 </Text>
               </div>
             </Dropdown.Item>
-            <Dropdown.Item onClick={() => router.push('/dashboard/settings/users')}>
-              <div className="flex flex-col">
-                <Text size="md" weight={'medium'} className="capitalize">
-                  Settings
-                </Text>
-              </div>
-            </Dropdown.Item>
+
             <Dropdown.Separator className="mx-2  bg-gray-200" />
             <Dropdown.Item onClick={() => router.push('/auth/signin')}>
               <Text size="md" className="text-text-danger">

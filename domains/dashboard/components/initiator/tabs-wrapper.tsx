@@ -46,17 +46,22 @@ const requestStatus: { key: RequestStatus; value: string }[] = [
 
 const TabsWrapper: React.FC = () => {
   const { currentWorkspace } = useWorkspaceContext();
-  const { user } = useUserContext();
+  const { user, currentWorkspaceRole } = useUserContext();
 
   const workspaceId = currentWorkspace?.id;
 
   const [tabsData, setTabsData] = useState<{ key: TabKey; label: string }[]>([
     { key: 'my-requests', label: 'Requests by you' },
-    {
-      key: 'approve-requests',
-      label: 'Approve Requests',
-    },
+    ...(currentWorkspaceRole === 'Manager'
+      ? [
+          {
+            key: 'approve-requests' as TabKey,
+            label: 'Approve Requests',
+          },
+        ]
+      : []),
   ]);
+
   const [activeTab, setActiveTab] = useState<TabKey>('my-requests');
   const [activeStatus, setActiveStatus] = useState<(typeof requestStatus)[0]>(requestStatus[0]);
 
@@ -88,8 +93,6 @@ const TabsWrapper: React.FC = () => {
     const requestsList = queryClient.getQueryData<RequestItemProps[]>(requestsListQueryKey);
     return requestsList?.length || null;
   };
-
-  console.log({ activeStatus });
 
   return (
     <Tabs defaultValue={activeTab} className="" onValueChange={key => handleTabChange(key as TabKey)}>

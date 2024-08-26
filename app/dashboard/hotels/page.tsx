@@ -23,15 +23,7 @@ const Hotel = () => {
     <PageWrapper>
       <CreateHotelModal isOpen={open} title={'Add approved hotel'} onClose={() => onOpenChange(false)} />
       <section className="flex justify-between">
-        <h1 className="text-1xl font-bold">Approved hotels</h1>
-
-        <Button
-          className="flex items-center space-x-1 rounded border bg-transparent p-2 hover:border-gray-300 hover:bg-gray-100"
-          onClick={() => onOpenChange(true)}
-        >
-          <Plus color="gray" size={16} />
-          <span className="text-xs text-gray-700">New Hotel</span>
-        </Button>
+        <h1 className="text-1xl font-bold">Approved Issues</h1>
       </section>
       <section className="table-section mt-4">
         {isPending ? (

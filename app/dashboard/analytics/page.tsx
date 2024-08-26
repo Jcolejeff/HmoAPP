@@ -17,6 +17,7 @@ import StatCard from '@/domains/analytics/components/stat-card';
 import TopTravelers from '@/domains/analytics/components/top-travellers';
 import useAnalytics from '@/domains/analytics/hooks/use-analytics';
 import { useUserContext } from '@/domains/user/contexts/user-context';
+import RoleGuard from '@/components/shared/check-for-role-to-display-page';
 
 type DateRange = 7 | 30 | 60;
 
@@ -44,6 +45,8 @@ const Analytics = () => {
   }
 
   return (
+    <RoleGuard role="Manager" isAllowed={currentWorkspaceRole === 'Manager'}>
+
     <section className="min-h-screen">
       <GenerateReportModal
         isOpen={isGenerateReportModalOpen}
@@ -92,10 +95,9 @@ const Analytics = () => {
       <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
         <StatCard
           title="Total spend"
-          value={`${formatToNaira(data?.total_organization_spend ?? 0)}` ?? 0}
+          value={`${formatToNaira(data?.total_organization_spend ?? 0 ?? ?? 0 0)}` ?? 0}
           image="/svg/dashboard/icons_money.svg"
         />
-        <StatCard
           title="Total hotels booked"
           value={data ? `${data.total_hotels_booked}` : '0'}
           image="/svg/dashboard/bell_outline.svg"
@@ -116,7 +118,8 @@ const Analytics = () => {
         <TopTravelers startDate={startDate} endDate={endDate} />
       </div>
       <ActivityTable startDate={startDate} endDate={endDate} />
-    </section>
+      </section>
+    </RoleGuard>
   );
 };
 

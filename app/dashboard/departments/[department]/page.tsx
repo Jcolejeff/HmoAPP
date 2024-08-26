@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import RoleGuard from '@/components/shared/check-for-role-to-display-page';
 import EmptyContentWrapper from '@/components/shared/empty-content-wrapper';
 import SecondarySortPopover from '@/components/shared/secondary-sort-pop-over';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,7 @@ import { useDepartmentsRequestContext } from '@/domains/departments/context/depa
 import useFetchDepartmentMembers from '@/domains/departments/hooks/use-fetch-department-members';
 import { coworkersData } from '@/domains/departments/static';
 import RequestItem from '@/domains/hotel-officer-portal/components/request-item';
+import { useUserContext } from '@/domains/user/contexts/user-context';
 
 interface iDepartmentPage {
   params: {
@@ -27,7 +29,9 @@ interface iDepartmentPage {
 
 const DepartmentPage = ({ params }: iDepartmentPage) => {
   const [loading, setLoading] = useState(true);
-  // const [coworkers, setCoworkers] = useState<any[]>([]);
+
+  const { currentWorkspaceRole } = useUserContext();
+
   const [requests, setRequests] = useState<any[]>([]);
   const [searchInput, setSearchInput] = useState('');
   const { activeTab, setActiveTab, activeDepartmentTab, setActiveDepartmentTab } = useDepartmentsRequestContext();
@@ -155,21 +159,22 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
   };
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="mb-4">
-        <Button
-          onClick={() => router.back()}
-          className="flex items-center space-x-1 rounded bg-transparent p-2 hover:bg-gray-100"
-        >
-          <ChevronLeft color="gray" size={16} />
-          <span className="text-xs text-gray-700">Back</span>
-        </Button>
-      </div>
+    <RoleGuard role="Manager" isAllowed={currentWorkspaceRole === 'Manager'}>
+      <div className="container mx-auto px-4">
+        <div className="mb-4">
+          <Button
+            onClick={() => router.back()}
+            className="flex items-center space-x-1 rounded bg-transparent p-2 hover:bg-gray-100"
+          >
+            <ChevronLeft color="gray" size={16} />
+            <span className="text-xs text-gray-700">Back</span>
+          </Button>
+        </div>
 
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex w-full justify-between">
-          <h1 className="text-1xl font-bold">Manage department</h1>
-          {/* <div className="flex space-x-2">
+        <div className="mb-2 flex items-center justify-between">
+          <div className="flex w-full justify-between">
+            <h1 className="text-1xl font-bold">Manage department</h1>
+            {/* <div className="flex space-x-2">
             <Button
               className="flex items-center space-x-1 rounded border bg-transparent p-2 hover:border-gray-300 hover:bg-gray-100"
               onClick={() => '/'}
@@ -184,23 +189,23 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
               <span className="text-xs text-gray-200">Co-worker</span>
             </Button>
           </div> */}
+          </div>
         </div>
-      </div>
 
-      <div className="mb-4 mt-4 rounded-lg border bg-white p-3">
-        <div className="mb-4 flex border-b">
-          <Button
-            className={`px-4 py-2 ${activeDepartmentTab === 'Coworkers' ? 'border-b-2 border-black text-black' : 'text-gray-500'} rounded-none bg-transparent`}
-            onClick={() => handleTabChange('Coworkers')}
-          >
-            <Text size={'xs'} className="flex items-center">
-              All Users{' '}
-              <Text size={'xs'} className="ml-1 rounded-lg bg-black px-2 py-1 text-white">
-                {coworkers && coworkers.items.length}
+        <div className="mb-4 mt-4 rounded-lg border bg-white p-3">
+          <div className="mb-4 flex border-b">
+            <Button
+              className={`px-4 py-2 ${activeDepartmentTab === 'Coworkers' ? 'border-b-2 border-black text-black' : 'text-gray-500'} rounded-none bg-transparent`}
+              onClick={() => handleTabChange('Coworkers')}
+            >
+              <Text size={'xs'} className="flex items-center">
+                All Users{' '}
+                <Text size={'xs'} className="ml-1 rounded-lg bg-black px-2 py-1 text-white">
+                  {coworkers && coworkers.items.length}
+                </Text>
               </Text>
-            </Text>
-          </Button>
-          {/* <Button
+            </Button>
+            {/* <Button
             className={`px-4 py-2 ${activeDepartmentTab === 'Requests' ? 'border-b-2 border-black text-black' : 'text-gray-500'} rounded-none bg-transparent`}
             onClick={() => handleTabChange('Requests')}
           >
@@ -211,25 +216,26 @@ const DepartmentPage = ({ params }: iDepartmentPage) => {
               </Text>
             </Text>
           </Button> */}
-        </div>
-        <div className="mb-6 flex justify-between border-b pb-4">
-          <div className="flex h-full w-fit items-center rounded-lg border px-4 py-1  ">
-            <Search className="h-full w-4" color="#B1B0B9" />
-            <div className="flex-grow">
-              <Input
-                className="border-0 text-xs shadow-none focus-within:border-0 focus-within:shadow-none focus-within:ring-0 focus:border-0 focus:shadow-none focus:!ring-0 focus-visible:border-0 focus-visible:shadow-none focus-visible:ring-0"
-                placeholder="Search for past & present requests"
-                type="text"
-                value={searchInput}
-                onChange={e => setSearchInput(e.target.value)}
-              />
+          </div>
+          <div className="mb-6 flex justify-between border-b pb-4">
+            <div className="flex h-full w-fit items-center rounded-lg border px-4 py-1  ">
+              <Search className="h-full w-4" color="#B1B0B9" />
+              <div className="flex-grow">
+                <Input
+                  className="border-0 text-xs shadow-none focus-within:border-0 focus-within:shadow-none focus-within:ring-0 focus:border-0 focus:shadow-none focus:!ring-0 focus-visible:border-0 focus-visible:shadow-none focus-visible:ring-0"
+                  placeholder="Search for past & present requests"
+                  type="text"
+                  value={searchInput}
+                  onChange={e => setSearchInput(e.target.value)}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        {renderCoworkers()}
+          {renderCoworkers()}
+        </div>
       </div>
-    </div>
+    </RoleGuard>
   );
 };
 

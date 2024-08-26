@@ -25,7 +25,7 @@ export const columns: ColumnDef<HotelType>[] = [
     accessorKey: 'hotel_name',
     header: () => (
       <Text size={'sm'} weight={'bold'}>
-        Hotel name
+        Issue Title
       </Text>
     ),
     cell: ({ row }) => {
