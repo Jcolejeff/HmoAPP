@@ -49,10 +49,10 @@ import CommentUpload from './comment-upload';
 export interface RequestSideBarProps {}
 export type HotelDetail = {
   name: string;
-  value: string | null | undefined;
+  value: string | null | undefined | number;
 };
 
-export type ApproveRequestArgs = { status: RequestStatus; rejectionReason?: string };
+export type ApproveRequestArgs = { status: RequestStatus; rejectionReason?: string; request: RequestItemProps };
 
 /**
  * Request key/value details like accomodation and hotel details
@@ -72,19 +72,6 @@ export const RequestKVDetails = ({ details }: { details: HotelDetail[] }) => {
                 <Text size={'xs'} className="text-text-dim">
                   {item.name}
                 </Text>
-              </TableCell>
-              <TableCell className="p-0  text-end">
-                {item.name === 'Purpose' ? (
-                  <Text
-                    size={'xs'}
-                    className="text-text-dim"
-                    dangerouslySetInnerHTML={{ __html: item.value ?? 'N/A' }}
-                  />
-                ) : (
-                  <Text size={'xs'} className="text-text-dim">
-                    {item.value}
-                  </Text>
-                )}
               </TableCell>
             </TableRow>
           );
@@ -113,6 +100,7 @@ export const ApproveRequestConfirmationDialog = ({
 }) => {
   const [activeStatus, setActiveStatus] = useState<(typeof requestStatus)[0]>(requestStatus[0]);
   const [rejectionReason, setRejectionReason] = useState('');
+  const { currentRequest } = useCreateRequestContext();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={true}>
@@ -163,7 +151,7 @@ export const ApproveRequestConfirmationDialog = ({
                 toast.error('Rejection reason is required if you reject a request');
                 return;
               }
-              onConfirm({ status: activeStatus.key, rejectionReason });
+              onConfirm({ status: activeStatus.key, rejectionReason, request: currentRequest as RequestItemProps });
               setActiveStatus(requestStatus[0]);
             }}
           >
@@ -273,7 +261,7 @@ const RequestSideBar = ({}: RequestSideBarProps) => {
     onOpenChange(true);
   };
 
-  const approveRequest = ({ status, rejectionReason }: ApproveRequestArgs) => {
+  const approveRequest = ({ status, rejectionReason, request }: ApproveRequestArgs) => {
     if (!currentRequest) return;
 
     updateRequest(
@@ -281,6 +269,14 @@ const RequestSideBar = ({}: RequestSideBarProps) => {
         id: currentRequest.id,
         status,
         rejection_reason: rejectionReason,
+        purpose: request.purpose,
+        state: request.state,
+        city: request.city,
+        country: request.country,
+        start: request.start,
+        hotel: request.hotel,
+        room: request.room,
+        rate: request.rate,
       },
       {
         onSuccess: data => {

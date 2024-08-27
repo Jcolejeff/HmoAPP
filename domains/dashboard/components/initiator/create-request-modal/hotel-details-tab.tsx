@@ -89,8 +89,12 @@ const HotelDetailsTab = ({ switchTab, data: tabData, handleComplete }: Iprops) =
       ? {
           faculty_name: createRequestData?.hotel ?? 'jos hotel',
           phone: createRequestData?.room ?? 'standard',
+          school_email: createRequestData?.country ?? 'Nigeria',
 
           start_date: new Date(createRequestData?.start ?? new Date()),
+          department_name: createRequestData?.state ?? 'Nassa',
+          matric_number: createRequestData?.city ?? '123456',
+          level: createRequestData?.rate?.toString() ?? '100',
         }
       : {},
   });
