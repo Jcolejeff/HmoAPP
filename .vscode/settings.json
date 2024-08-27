@@ -19,10 +19,5 @@
   "terminal.integrated.scrollback": 10000,
 
   // Disable TypeScript surveys.
-  "typescript.surveys.enabled": false,
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#296b14",
-    "titleBar.activeBackground": "#467c2d",
-    "titleBar.activeForeground": "#FCFCFE"
-  }
+  "typescript.surveys.enabled": false
 }

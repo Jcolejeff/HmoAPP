@@ -374,6 +374,7 @@ const RequestSideBar = ({}: RequestSideBarProps) => {
                   </Text>
                 </Button>
               )}
+
               <div className=" my-4 flex items-center justify-between gap-1">
                 <div className="h-[1px] w-[25%] bg-gray-200" />
 
