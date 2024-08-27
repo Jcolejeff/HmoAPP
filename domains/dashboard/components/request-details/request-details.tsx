@@ -234,47 +234,33 @@ const RequestSideBar = ({}: RequestSideBarProps) => {
 
   const details = data ? data : currentRequest;
 
-  const travelDetails = [
+  const studentDetails = [
     {
-      name: 'Location',
-      value: `${details?.city}, ${details?.state}`,
+      name: 'Faculty',
+      value: `${details?.hotel}`,
     },
     {
-      name: 'Start date',
+      name: 'Department',
+
+      value: details?.state,
+    },
+    {
+      name: 'Mat Num.',
+
+      value: details?.city,
+    },
+    {
+      name: 'Issue Start date',
+
       value: details?.start && formatDate(details?.start, 'dd MMMM, yyyy'),
     },
     {
-      name: 'End date',
-      value: details?.end && formatDate(details?.end, 'dd MMMM, yyyy'),
-    },
-
-    {
-      name: 'Purpose',
-      value: details?.purpose,
-    },
-  ];
-
-  const hotelDetails = [
-    {
-      name: 'Hotel',
-      value: details?.hotel,
+      name: 'Level',
+      value: details?.rate,
     },
     {
-      name: 'Room type',
+      name: 'Phone',
       value: details?.room,
-    },
-    {
-      name: 'Room price',
-      value: `${formatToNaira(details?.rate || 0)}`,
-    },
-    {
-      name: 'Meal',
-      value: details?.meal,
-    },
-
-    {
-      name: 'Transport',
-      value: details?.transport,
     },
   ];
 
@@ -395,38 +381,26 @@ const RequestSideBar = ({}: RequestSideBarProps) => {
               </Text>
 
               <div className="space-y-4 rounded-lg bg-primary-4  px-4 py-4 md:px-4">
-                <Text as="p" className="mb-4 text-sm font-medium text-black">
-                  Travel request to {details.city}, {details.state} on the {formatDate(details.start, 'dd MMM, yyyy')}
-                </Text>
-
-                <div className="*: flex w-fit gap-1 rounded-full bg-white p-2 shadow-sm">
-                  <Calendar className=" h-4 w-4" />
-                  <Text className="text-xs text-black">
-                    {calculateDaysBetweenDates(details.start, details.end)}{' '}
-                    {details.start === details.end ? 'day' : 'days'}
-                  </Text>
-                </div>
-
                 <article className="space-y-2">
                   <div className="rounded-lg border border-b-0 bg-white  px-4 pb-2  ">
                     <Text size={'xs'} className="mb-1 w-full border-b py-4 font-semibold uppercase">
-                      Travel details
+                      Issue details
                     </Text>
-                    <RequestKVDetails details={travelDetails} />
+                    <RequestKVDetails details={studentDetails} />
                   </div>
-                  <div className="rounded-lg border border-b-0 bg-white px-4 pb-2">
-                    <Text size={'xs'} className="mb-1 w-full border-b py-4 font-semibold uppercase">
-                      Accommodation details
+
+                  <div className=" rounded-lg border border-b-0 bg-white  px-4 pb-2  ">
+                    <Text size={'xs'} className="mb-1 w-full  py-4 font-semibold uppercase">
+                      Issue description
                     </Text>
-                    <RequestKVDetails details={hotelDetails} />
-                  </div>
-                  <div className=" rounded-lg border border-b-0 bg-white px-4 pb-2">
-                    <Text size={'xs'} className="mb-1 w-full  border-b py-4 font-semibold uppercase">
-                      Additional notes
-                    </Text>
-                    <Text size={'xs'} className=" my-4 text-text-dim">
-                      {details.other_requests}
-                    </Text>
+
+                    <Text
+                      size={'xs'}
+                      className="text-text-dim"
+                      dangerouslySetInnerHTML={{
+                        __html: details?.purpose ?? 'N/A',
+                      }}
+                    />
                   </div>
                 </article>
               </div>

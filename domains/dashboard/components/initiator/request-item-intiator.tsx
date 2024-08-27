@@ -49,7 +49,7 @@ const RequestItem: React.FC<RequestItemProps> = props => {
       <div className="w-full">
         <div className="flex items-center justify-between  ">
           <h4 className=" text-sm font-medium">
-            Travel request - {id} - {hotel}/ {city},{state} -{' '}
+            Student request - {id} - {hotel}/ {city},{state} -{' '}
             <span className="text-xs text-text-dim">{formatRelative(date_created, new Date())} </span>
           </h4>
           <AnimatePresence>

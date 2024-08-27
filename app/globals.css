@@ -109,7 +109,7 @@ body::-webkit-scrollbar-track {
   @media screen and (max-width: 1754px) {
     .additional-notes-height {
       height: 70vh !important;
-      max-height: 36.2rem !important;
+      max-height: 20.6rem !important;
     }
   }
   .line-through {

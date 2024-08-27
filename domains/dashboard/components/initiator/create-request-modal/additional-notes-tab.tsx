@@ -69,7 +69,7 @@ const AdditionalNotesTab = ({ switchTab, data: tabData, handleComplete, setModal
     setCreateRequestData,
     isEditMode,
   } = useCreateRequestContext();
-  const [textValue, setTextValue] = React.useState<string>(createRequestData.other_requests || '');
+  const [textValue, setTextValue] = React.useState<string>(createRequestData.purpose || '');
   const { mutate: updateRequest, isPending: isUpdateRequestPending } = useUpdateRequest();
   const { mutate, isPending: isCreateRequestPending, isSuccess, isError } = useCreateRequest();
   const [showTransportInput, setShowTransportInput] = React.useState(false);
@@ -90,7 +90,6 @@ const AdditionalNotesTab = ({ switchTab, data: tabData, handleComplete, setModal
         updateRequest(
           {
             ...values,
-            other_requests: textValue,
             transport: transportValue,
             meal: mealValue,
           },
@@ -135,29 +134,32 @@ const AdditionalNotesTab = ({ switchTab, data: tabData, handleComplete, setModal
     }
   };
 
-  const travelDetails = [
+  const studentDetails = [
     {
-      name: 'Location',
-      value: `${createRequestData.city}, ${createRequestData.state}`,
+      name: 'Faculty',
+      value: `${createRequestData.hotel}`,
     },
     {
-      name: 'Start date',
+      name: 'Department',
+
+      value: createRequestData.state,
+    },
+    {
+      name: 'Mat Num.',
+
+      value: createRequestData.city,
+    },
+    {
+      name: 'Issue Start date',
 
       value: createRequestData.start && formatDate(createRequestData.start, 'dd MMMM, yyyy'),
     },
     {
-      name: 'End date',
-
-      value: createRequestData.end && formatDate(createRequestData.end, 'dd MMMM, yyyy'),
-    },
-  ];
-  const hotelDetails = [
-    {
-      name: 'Hotel',
-      value: createRequestData.hotel,
+      name: 'Level',
+      value: createRequestData.rate,
     },
     {
-      name: 'Room type',
+      name: 'Phone',
       value: createRequestData.room,
     },
   ];
@@ -183,10 +185,7 @@ const AdditionalNotesTab = ({ switchTab, data: tabData, handleComplete, setModal
               <Text weight={'semibold'} size={'default'} className="text-black">
                 Your request has been sent!
               </Text>
-              <Text className="mt-2 text-center text-xs leading-5 text-text-dim md:max-w-[30%]">
-                If this was a mistake, Click <span className="cursor-pointer text-black underline">HERE</span> to cancel
-                the request.
-              </Text>
+
               <div className=" mt-6 flex w-full justify-end border-t pt-3">
                 <Button
                   disabled={isCreateRequestPending}
@@ -207,28 +206,14 @@ const AdditionalNotesTab = ({ switchTab, data: tabData, handleComplete, setModal
         <Show.Else>
           <>
             <div className="additional-notes-height  space-y-4 overflow-scroll rounded-lg bg-primary-4 px-4 py-4  md:px-4">
-              <Text as="p" className="mb-4 text-sm font-medium text-black">
-                Travel request to {createRequestData.city},{createRequestData.state} on the{' '}
-                {formatDate(createRequestData.start ?? new Date(), 'dd MMM, yyyy')}
-              </Text>
-
-              <div className="*: flex w-fit gap-1 rounded-full bg-white p-2 shadow-sm">
-                <Calendar className=" h-4 w-4" />
-                <Text className="text-xs text-black">
-                  {createRequestData.start &&
-                    createRequestData.end &&
-                    `${calculateDaysBetweenDates(createRequestData.start, createRequestData.end)} ${createRequestData.start === createRequestData.end ? 'day' : 'days'}`}
-                </Text>
-              </div>
-
               <article>
                 <div className=" rounded-lg border border-b-0 bg-white  px-4 pb-2  ">
                   <Text size={'xs'} className="mb-1 w-full border-b py-4 font-semibold uppercase">
-                    Travel details
+                    Student details
                   </Text>
                   <Table>
                     <TableBody>
-                      {travelDetails.map(item => (
+                      {studentDetails.map(item => (
                         <TableRow key={item.name} className="border-none ">
                           <TableCell className="flex  gap-1 p-0  py-2">
                             <MapPinIcon className="h-4 w-4 text-text-dim" />
@@ -244,164 +229,21 @@ const AdditionalNotesTab = ({ switchTab, data: tabData, handleComplete, setModal
                           </TableCell>
                         </TableRow>
                       ))}
-                      <TableRow className="border-none ">
-                        <TableCell className="flex  gap-1 p-0  py-2">
-                          <MapPinIcon className="h-4 w-4 text-text-dim" />
-
-                          <Text size={'xs'} className="text-text-dim">
-                            Travel Purpose
-                          </Text>
-                        </TableCell>
-                        <TableCell className="p-0  text-end">
-                          <Text
-                            size={'xs'}
-                            className="text-text-dim"
-                            dangerouslySetInnerHTML={{
-                              __html: createRequestData.purpose ?? 'N/A',
-                            }}
-                          />
-                        </TableCell>
-                      </TableRow>
                     </TableBody>
                   </Table>
                 </div>
+
                 <div className=" rounded-lg border border-b-0 bg-white  px-4 pb-2  ">
-                  <Text size={'xs'} className="mb-1 w-full border-b py-4 font-semibold uppercase">
-                    Accommodation details
-                  </Text>
-                  <Table>
-                    <TableBody>
-                      {hotelDetails.map(item => (
-                        <TableRow key={item.name} className="border-none ">
-                          <TableCell className="flex  gap-1 p-0  py-2">
-                            <MapPinIcon className="h-4 w-4 text-text-dim" />
-
-                            <Text size={'xs'} className="text-text-dim">
-                              {item.name}
-                            </Text>
-                          </TableCell>
-                          <TableCell className="p-0  text-end">
-                            <Text size={'xs'} className="text-text-dim">
-                              {item.value}
-                            </Text>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                      {/* dynamic input for transport */}
-                      <TableRow className="items-center border-none  ">
-                        <TableCell className="flex gap-1 p-0  py-2">
-                          <MapPinIcon className="h-4 w-4 text-text-dim" />
-
-                          <Text size={'xs'} className="text-text-dim">
-                            Transport
-                          </Text>
-                        </TableCell>
-
-                        <TableCell className=" relative  p-0 text-end">
-                          <AnimatePresence>
-                            {(showTransportInput || createRequestData.transport) && (
-                              <motion.div
-                                initial={{ x: 300, opacity: 0, transitionDuration: '0.1s' }}
-                                animate={{ x: 0, opacity: 1, transitionDuration: '0.1s' }}
-                                exit={{ x: -300, opacity: 0, transitionDuration: '0.1s' }}
-                                className="h-full"
-                              >
-                                <div className="flex items-center gap-2">
-                                  <Input
-                                    value={transportValue}
-                                    onChange={e => setTransportValue(e.target.value)}
-                                    placeholder="Enter transport"
-                                    className="w-full"
-                                  />
-                                  <X
-                                    className="cursor-pointer"
-                                    onClick={() => {
-                                      setShowTransportInput(false);
-                                      setTransportValue('');
-                                    }}
-                                  />
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                          <Show>
-                            <Show.When isTrue={!showTransportInput && !createRequestData.transport}>
-                              <Button
-                                onClick={() => setShowTransportInput(true)}
-                                className="absolute right-0 top-0 py-2 text-xs leading-3"
-                              >
-                                Add
-                              </Button>
-                            </Show.When>
-                          </Show>
-                        </TableCell>
-                      </TableRow>
-                      {/* dynamic input for meal */}
-                      <TableRow className="items-center border-none  ">
-                        <TableCell className="flex gap-1 p-0  py-2">
-                          <MapPinIcon className="h-4 w-4 text-text-dim" />
-
-                          <Text size={'xs'} className="text-text-dim">
-                            Meal
-                          </Text>
-                        </TableCell>
-
-                        <TableCell className=" relative  p-0 text-end">
-                          <AnimatePresence>
-                            {(showMealInput || createRequestData.meal) && (
-                              <motion.div
-                                initial={{ x: 300, opacity: 0, transitionDuration: '0.1s' }}
-                                animate={{ x: 0, opacity: 1, transitionDuration: '0.1s' }}
-                                exit={{ x: -300, opacity: 0, transitionDuration: '0.1s' }}
-                                className="h-full"
-                              >
-                                <div className="flex items-center gap-2">
-                                  <Input
-                                    value={mealValue}
-                                    onChange={e => setMealValue(e.target.value)}
-                                    placeholder="Enter Meal Details"
-                                    className="w-full"
-                                  />
-                                  <X
-                                    className="cursor-pointer"
-                                    onClick={() => {
-                                      setShowMealInput(false);
-                                      setMealValue('');
-                                    }}
-                                  />
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                          <Show>
-                            <Show.When isTrue={!showMealInput && !createRequestData.meal}>
-                              <Button
-                                onClick={() => setShowMealInput(true)}
-                                className="absolute right-0 top-0 py-2 text-xs leading-3"
-                              >
-                                Add
-                              </Button>
-                            </Show.When>
-                          </Show>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-                <div className=" rounded-lg border border-b-0 bg-white  px-4 pb-2  ">
-                  <Text size={'xs'} className="mb-1 w-full  border-b py-4 font-semibold uppercase">
-                    Additional notes
+                  <Text size={'xs'} className="mb-1 w-full  py-4 font-semibold uppercase">
+                    Issue description
                   </Text>
 
-                  <Textarea
-                    name="title"
-                    placeholder="Enter additional notes"
-                    className="my-2 w-full border-none bg-primary-4"
-                    value={textValue}
-                    onChange={e => setTextValue(e.target.value)}
-                    variant="minimal"
-                    size="xs"
-                    rows={2}
+                  <Text
+                    size={'xs'}
+                    className="text-text-dim"
+                    dangerouslySetInnerHTML={{
+                      __html: createRequestData.purpose ?? 'N/A',
+                    }}
                   />
                 </div>
               </article>

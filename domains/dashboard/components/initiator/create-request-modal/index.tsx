@@ -111,7 +111,7 @@ const CreateRequestModal: React.FC<ModalProps> = ({ isOpen, onClose, title }) =>
                     >
                       <Icon name={checkIcon(data[0])} />
                       <Text weight={'medium'} className="" size={'sm'}>
-                        Travel details
+                        Issue details
                       </Text>
                     </TabsTrigger>
                     <Icon name={completed.includes(data[0]) ? 'ConnectorFilled' : 'ConnectorNotFilled'} />
@@ -125,7 +125,7 @@ const CreateRequestModal: React.FC<ModalProps> = ({ isOpen, onClose, title }) =>
                     >
                       <Icon name={checkIcon(data[1])} />
                       <Text weight={'medium'} className="" size={'sm'}>
-                        Accommodation details
+                        Student details
                       </Text>
                     </TabsTrigger>
 
@@ -140,7 +140,7 @@ const CreateRequestModal: React.FC<ModalProps> = ({ isOpen, onClose, title }) =>
                     >
                       <Icon name={checkIcon(data[2])} />
                       <Text weight={'medium'} className="" size={'sm'}>
-                        Additional notes
+                        Review & Submit
                       </Text>
                     </TabsTrigger>
                   </TabsList>

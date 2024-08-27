@@ -58,7 +58,7 @@ const TravelDetailsTab = ({ switchTab, data: tabData, handleComplete }: Iprops) 
     <TabsContent value="travel-details" className="h-full w-full    border-t ">
       <section>
         <Text weight={'medium'} size={'sm'} className="my-4 ">
-          Describe your travel request
+          Describe your issue in detail
         </Text>
         <TextEditor value={textValue} setValue={setTextValue} />
       </section>
@@ -77,19 +77,6 @@ const TravelDetailsTab = ({ switchTab, data: tabData, handleComplete }: Iprops) 
 
         <Button
           onClick={() => {
-            // query llm to pull location data
-            // getLocationFromDescription(textValue).then(data => {
-            //   console.log({ data });
-            //   setCreateRequestData({
-            //     ...createRequestData,
-            //     purpose: textValue,
-            //     city: data?.city,
-            //     state: data?.state,
-            //     country: data?.country,
-            //   });
-            //   switchTab(tabData[1]);
-            //   handleComplete(tabData[0]);
-            // });
             setCreateRequestData({ ...createRequestData, purpose: textValue });
             switchTab(tabData[1]);
             handleComplete(tabData[0]);

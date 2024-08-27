@@ -40,13 +40,13 @@ function CalendarInput({ control, name, label, placeholder = name, ...rest }: Te
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
-                      <div className="flex  cursor-pointer items-center rounded-md border py-4 pl-3">
-                        <FormLabel className="block text-black">{label && label}</FormLabel>
+                      <div className=" flex  cursor-pointer flex-col  gap-2 rounded-md  py-2">
+                        <FormLabel className="block  ">{label && label}</FormLabel>
                         <Button
                           type="button"
                           variant={'ghost'}
                           className={cn(
-                            'flex w-[240px] justify-between p-0 pl-3 text-xs font-normal',
+                            'flex w-[240px] justify-between border text-xs font-normal',
                             !field.value && 'text-muted-foreground',
                           )}
                         >
