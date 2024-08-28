@@ -347,3 +347,14 @@ interface Location {
   state: string;
   street: string;
 }
+export interface ContentType {
+  id: number;
+  content: string;
+  organization_id: string;
+}
+
+export interface ContentValue {
+  title: string;
+  issue: string;
+  solution: string;
+}

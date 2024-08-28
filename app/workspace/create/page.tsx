@@ -44,8 +44,8 @@ const CreateOrganization = () => {
     resolver: zodResolver(createOrganizationSchema),
     defaultValues: {
       name: '',
-      country: 'nigeria',
-      state: 'plateau',
+      country: 'Nigeria',
+      state: 'Plateau',
       address: '',
       phone: '',
     },

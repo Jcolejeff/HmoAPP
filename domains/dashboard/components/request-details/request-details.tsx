@@ -1,4 +1,5 @@
 import { DialogTitle } from '@radix-ui/react-dialog';
+import { useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { formatDate, formatRelative } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -29,12 +30,14 @@ import { Text } from '@/components/ui/text';
 import { Textarea } from '@/components/ui/textarea';
 
 import processError from '@/lib/error';
+import { hotelKeys } from '@/lib/react-query/query-keys';
 import { calculateDaysBetweenDates, formatToNaira, url } from '@/lib/utils';
 import { cn } from '@/lib/utils/css';
 import { getInitialsFromSentence } from '@/lib/utils/string';
 
 import { RequestItemProps, RequestStatus } from '@/domains/requests/type';
 import { useUserContext } from '@/domains/user/contexts/user-context';
+import { useWorkspaceContext } from '@/domains/workspace/contexts/workspace-context';
 
 import { useSingleRequest } from '../../../requests/hooks/use-single-request';
 import { useUpdateRequest } from '../../../requests/hooks/use-update-request';
@@ -101,7 +104,6 @@ export const ApproveRequestConfirmationDialog = ({
   const [activeStatus, setActiveStatus] = useState<(typeof requestStatus)[0]>(requestStatus[0]);
   const [rejectionReason, setRejectionReason] = useState('');
   const { currentRequest } = useCreateRequestContext();
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={true}>
       <DialogContent className="min-w-[500px] p-4">
@@ -165,6 +167,9 @@ export const ApproveRequestConfirmationDialog = ({
 
 const RequestSideBar = ({}: RequestSideBarProps) => {
   const { user } = useUserContext();
+  const queryClient = useQueryClient();
+  const { currentWorkspace } = useWorkspaceContext();
+
   const {
     showRequestDetail,
     currentRequest,
@@ -194,29 +199,6 @@ const RequestSideBar = ({}: RequestSideBarProps) => {
   useEffect(() => {
     scrollToTheTop();
   }, [currentRequest]);
-
-  const handleSubmitComment = (content: string, currReq: RequestItemProps) => {
-    if (content && currReq && content.trim().length > 0) {
-      createComment(
-        {
-          content: content,
-          record_id: currReq.id,
-        },
-        {
-          onSuccess: () => {
-            toast.success(`Comment Added Successfully`);
-            setNewComment('');
-          },
-          onError: error => {
-            console.log({ error });
-            if (error instanceof AxiosError) processError(error);
-          },
-        },
-      );
-    } else {
-      toast.error('Comment cannot be empty');
-    }
-  };
 
   const { data, isFetching, isLoading } = useSingleRequest(currentRequest?.id!);
 
@@ -262,7 +244,7 @@ const RequestSideBar = ({}: RequestSideBarProps) => {
   };
 
   const approveRequest = ({ status, rejectionReason, request }: ApproveRequestArgs) => {
-    if (!currentRequest) return;
+    if (!currentRequest || !currentWorkspace) return;
 
     updateRequest(
       {
@@ -282,6 +264,7 @@ const RequestSideBar = ({}: RequestSideBarProps) => {
         onSuccess: data => {
           setCurrentRequest(data);
           toast.success('Request Updated Successfully');
+          queryClient.invalidateQueries({ queryKey: hotelKeys.list(currentWorkspace?.id!.toString()) });
           setOpenApprovalDialog(false);
         },
       },

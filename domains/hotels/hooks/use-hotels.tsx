@@ -5,14 +5,15 @@ import { $http } from '@/lib/http';
 import { hotelKeys } from '@/lib/react-query/query-keys';
 
 import { useWorkspaceContext } from '@/domains/workspace/contexts/workspace-context';
+import { ContentType } from '@/types';
 
 import { useHotelContext } from '../context/hotel-context';
 
 import { HotelType } from './create-hotel';
 
-type GetHotelsResponse = {
+type GetResponse = {
   total: number;
-  items: HotelType[];
+  items: ContentType[];
   next_page?: string;
   previous_page?: string;
   page: number;
@@ -31,12 +32,12 @@ const useHotels = () => {
     queryFn: async () => {
       if (!currentWorkspace) return;
       return (
-        await $http.get<GetHotelsResponse>(`/hotels`, {
+        await $http.get<GetResponse>(`/closeds`, {
           params: {
             organization_id: currentWorkspace.id,
             page: pagination.pageIndex,
 
-            size: pagination.pageSize,
+            size: 100,
           },
         })
       ).data;

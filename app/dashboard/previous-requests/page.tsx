@@ -3,7 +3,9 @@
 import { ChevronLeft, Plus } from 'lucide-react';
 import React from 'react';
 
+import ContentLoader from '@/components/shared/content-loading-screen';
 import { DataTable } from '@/components/shared/data-table';
+import EmptyContentWrapper from '@/components/shared/empty-content-wrapper';
 import GoBackButton from '@/components/shared/go-back-button';
 import PageWrapper from '@/components/shared/page-wrapper';
 import { Button } from '@/components/ui/button';
@@ -32,19 +34,19 @@ const Hotel = () => {
           <h1 className="text-1xl font-bold">Approved Issues</h1>
         </section>
         <section className="table-section mt-4">
-          {isPending ? (
-            <div>Loading...</div>
-          ) : (
-            data && (
-              <DataTable
-                columns={columns}
-                data={data.items}
-                rowCount={data.total}
-                pagination={pagination}
-                setPagination={setPagination}
-              />
-            )
-          )}
+          <EmptyContentWrapper isEmpty={!isPending && data?.items.length === 0}>
+            <ContentLoader isLoading={isPending}>
+              {data && (
+                <DataTable
+                  columns={columns}
+                  data={data.items}
+                  rowCount={data.total}
+                  pagination={pagination}
+                  setPagination={setPagination}
+                />
+              )}
+            </ContentLoader>
+          </EmptyContentWrapper>
         </section>
       </section>
     </div>

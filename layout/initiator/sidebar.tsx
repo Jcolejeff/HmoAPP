@@ -68,7 +68,7 @@ const Sidebar = () => {
     {
       text: 'Previously Resolved Requests',
       icon: <Home className="text-inherit transition-all duration-200 ease-linear" />,
-      href: '/dashboard/hotels',
+      href: '/dashboard/previous-requests',
     },
     ...(currentWorkspaceRole === 'Manager'
       ? [

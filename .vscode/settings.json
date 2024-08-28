@@ -19,5 +19,11 @@
   "terminal.integrated.scrollback": 10000,
 
   // Disable TypeScript surveys.
-  "typescript.surveys.enabled": false
+  "typescript.surveys.enabled": false,
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#1c5306",
+    "titleBar.activeBackground": "#184A04",
+    "titleBar.activeForeground": "#F1FEEC"
+  },
+  "cSpell.words": ["closeds"]
 }

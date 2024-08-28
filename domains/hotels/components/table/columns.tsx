@@ -7,9 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Dropdown } from '@/components/ui/dropdown-menu';
 import { Text } from '@/components/ui/text';
 
+import { ContentType, ContentValue } from '@/types';
+
 import { HotelType } from '../../hooks/create-hotel';
 
-export const columns: ColumnDef<HotelType>[] = [
+export const columns: ColumnDef<ContentType>[] = [
   {
     accessorKey: 'id',
     header: () => (
@@ -22,49 +24,60 @@ export const columns: ColumnDef<HotelType>[] = [
     },
   },
   {
-    accessorKey: 'hotel_name',
+    accessorKey: 'content',
     header: () => (
       <Text size={'sm'} weight={'bold'}>
         Issue Title
       </Text>
     ),
     cell: ({ row }) => {
-      return <Text size={'sm'}>{row.getValue('hotel_name')}</Text>;
+      const contentString = row.getValue('content');
+      console.log(contentString);
+
+      // Replace single quotes with double quotes if necessary
+      const formattedContentString = (contentString as string).replace(/'/g, '"');
+
+      try {
+        const obj = JSON.parse(formattedContentString) as ContentValue;
+        console.log(obj.title);
+        return <Text size={'sm'}>{obj.title.replace(/"/g, "'")}</Text>;
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+        return <Text size={'sm'}>Invalid content</Text>; // Handle parse error
+      }
     },
   },
   {
-    accessorKey: 'city',
+    accessorKey: 'content',
     header: () => (
       <Text size={'sm'} weight={'bold'}>
-        City
+        Issue Solution
       </Text>
     ),
     cell: ({ row }) => {
-      return <Text size={'sm'}>{row.getValue('city')}</Text>;
+      const contentString = row.getValue('content');
+      console.log(contentString);
+
+      // Replace single quotes with double quotes if necessary
+      const formattedContentString = (contentString as string).replace(/'/g, '"');
+
+      try {
+        const obj = JSON.parse(formattedContentString) as ContentValue;
+        console.log(obj.title);
+        return (
+          <>
+            <Text size={'sm'} className="leading-7">
+              {obj.solution.replace(/"/g, "'")}
+            </Text>
+          </>
+        );
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+        return <Text size={'sm'}>Invalid content</Text>; // Handle parse error
+      }
     },
   },
-  {
-    accessorKey: 'state',
-    header: () => (
-      <Text size={'sm'} weight={'bold'}>
-        State
-      </Text>
-    ),
-    cell: ({ row }) => {
-      return <Text size={'sm'}>{row.getValue('state')}</Text>;
-    },
-  },
-  {
-    accessorKey: 'country',
-    header: () => (
-      <Text size={'sm'} weight={'bold'}>
-        Country
-      </Text>
-    ),
-    cell: ({ row }) => {
-      return <Text size={'sm'}>{row.getValue('country')}</Text>;
-    },
-  },
+
   {
     header: 'Actions',
     cell: ({ row }) => {
